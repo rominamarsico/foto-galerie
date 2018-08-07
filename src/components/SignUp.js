@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
-import { Link, withRouter, } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { auth } from '../firebase';
 import * as routes from '../constants/routes';
+import { auth } from '../firebase';
 
-const SignUpPage = ({ history }) =>
+const SignUpPage = () =>
   <div>
     <h1>SignUp</h1>
-    <SignUpForm history={history} />
+    <SignUpForm />
   </div>
 
-  const INITIAL_STATE = {
-    username: '',
-    email: '',
-    passwordOne: '',
-    passwordTwo: '',
-    error: null,
-  };
+const INITIAL_STATE = {
+  username: '',
+  email: '',
+  passwordOne: '',
+  passwordTwo: '',
+  error: null,
+};
 
-  const byPropKey = (propertyName, value) => () => ({
-    [propertyName]: value,
-  });
+const byPropKey = (propertyName, value) => () => ({
+  [propertyName]: value,
+});
 
 class SignUpForm extends Component {
   constructor(props) {
@@ -31,30 +31,22 @@ class SignUpForm extends Component {
 
   onSubmit = (event) => {
     const {
-      // eslint-disable-next-line
-      username,
-      email,
-      passwordOne,
-    } = this.state;
+    email,
+    passwordOne,
+  } = this.state;
 
-    const {
-      history,
-    } = this.props;
+  auth.doCreateUserWithEmailAndPassword(email, passwordOne)
+    .then(authUser => {
+      this.setState({ ...INITIAL_STATE });
+    })
+    .catch(error => {
+      this.setState(byPropKey('error', error));
+    });
 
-    auth.doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => {
-        this.setState({ ...INITIAL_STATE });
-        history.push(routes.HOME);
-      })
-      .catch(error => {
-        this.setState(byPropKey('error', error));
-      });
-
-    event.preventDefault();
+  event.preventDefault();
   }
 
   render() {
-
     const {
       username,
       email,
@@ -107,12 +99,12 @@ class SignUpForm extends Component {
 
 const SignUpLink = () =>
   <p>
-    "Don't have an account? "
+    Don't have an account?
     {' '}
     <Link to={routes.SIGN_UP}>Sign Up</Link>
   </p>
 
-export default withRouter(SignUpPage);
+export default SignUpPage;
 
 export {
   SignUpForm,
