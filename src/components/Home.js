@@ -3,6 +3,7 @@ import firebase from "firebase";
 import FileUploader from "react-firebase-file-uploader";
 
 class Home extends Component {
+  // ---- storage ----
   state = {
     username: "",
     avatar: "",
@@ -11,8 +12,6 @@ class Home extends Component {
     avatarURL: ""
   };
 
-  handleChangeUsername = event =>
-    this.setState({ username: event.target.value });
   handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
   handleProgress = progress => this.setState({ progress });
   handleUploadError = error => {
@@ -27,50 +26,70 @@ class Home extends Component {
       .child(filename)
       .getDownloadURL()
       .then(url => this.setState({ avatarURL: url }));
-
-    var urlArray = [];
-    urlArray.push(this.state.avatarURL)
-    // console.log(urlArray)
-    // console.log("Array Länge: " + urlArray.length)
-    console.log("BITTEEEE: " + firebase.storage.Reference.bucket)
   };
 
-  render() {
+  // ---- database ----
+  constructor(props) {
+    super(props);
+    this.state = { messages: [] }; // <- set up react state
+  }
+  componentWillMount(){
+    /* Create reference to messages in Firebase Database */
+    let messagesRef = firebase.database().ref('messages').orderByKey();
+    messagesRef.on('child_added', snapshot => {
+      /* Update React state when message is added at Firebase Database */
+      let message = { text: snapshot.val(), id: snapshot.key };
+      this.setState({ messages: [message].concat(this.state.messages) });
+    })
+  }
+  addMessage(e){
+    e.preventDefault(); // <- prevent from reloading the page
+    /* Send the message to Firebase */
+    firebase.database().ref('messages').push( this.state.avatarURL );
+  }
 
-    // firebase.storage().ref("images").child('44be445b-d4c0-4579-b0a3-86ab99b8915a.JPG').getDownloadURL().then(function(url) {
-    //   var img = document.getElementById('gallery');
-    //   img.src = url;
-    // })
+  render() {
+    var styleGalery = {
+      padding: "20px",
+      width:"30%",
+    };
 
     return (
       <div>
         <h1>Home</h1>
-        <form>
-          <label>Username:</label>
-          <input
-            type="text"
-            value={this.state.username}
-            name="username"
-            onChange={this.handleChangeUsername}
-          />
-          <label>Avatar:</label>
-          {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
-          <FileUploader
-            accept="image/*"
-            name="avatar"
-            storageRef={firebase.storage().ref("images")}
-            onUploadStart={this.handleUploadStart}
-            onUploadError={this.handleUploadError}
-            onUploadSuccess={this.handleUploadSuccess}
-            onProgress={this.handleProgress}
-            multiple="true"
-          />
+
+        {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
+        <FileUploader
+          accept="image/*"
+          name="avatar"
+          storageRef={firebase.storage().ref("images")}
+          onUploadStart={this.handleUploadStart}
+          onUploadError={this.handleUploadError}
+          onUploadSuccess={this.handleUploadSuccess}
+          onProgress={this.handleProgress}
+          multiple="false"
+        />
+
         <br /> <br />
-        {this.state.avatarURL && <img src={this.state.avatarURL} alt="avatar" width="30%"/>}
+
+        <form onSubmit={this.addMessage.bind(this)}>
+          <input
+            type="submit"
+            value="Jetzt hinzufügen"
+          />
         </form>
-        {/*
-          <img id="gallery" alt="gallery" width="30%"/>
-        */}
+
+        <br />
+
+        {this.state.avatarURL && <img src={this.state.avatarURL} alt="avatar" style={styleGalery} />}
+
+        <br />
+
+        <div>
+          { /* Render all images */
+            this.state.messages.map( message => <img key={message.id} src={message.text} alt={message.id} style={styleGalery} /> )
+          }
+        </div>
       </div>
     );
   }

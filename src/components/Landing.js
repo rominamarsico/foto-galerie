@@ -8,7 +8,7 @@ class LandingPage extends Component {
   }
   componentWillMount(){
     /* Create reference to messages in Firebase Database */
-    let messagesRef = firebase.database().ref('messages').orderByKey();
+    let messagesRef = firebase.database().ref('messages').orderByKey().limitToLast(100);
     messagesRef.on('child_added', snapshot => {
       /* Update React state when message is added at Firebase Database */
       let message = { text: snapshot.val(), id: snapshot.key };
