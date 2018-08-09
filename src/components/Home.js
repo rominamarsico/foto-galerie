@@ -31,33 +31,37 @@ class Home extends Component {
   // ---- database ----
   constructor(props) {
     super(props);
-    this.state = { messages: [] }; // <- set up react state
+    this.state = { photoData: [] }; // <- set up react state
   }
   componentWillMount(){
-    /* Create reference to messages in Firebase Database */
-    let messagesRef = firebase.database().ref('messages').orderByKey();
-    messagesRef.on('child_added', snapshot => {
-      /* Update React state when message is added at Firebase Database */
-      let message = { text: snapshot.val(), id: snapshot.key };
-      this.setState({ messages: [message].concat(this.state.messages) });
+    /* Create reference to photoData in Firebase Database */
+    let photoDataRef = firebase.database().ref('photo-url').orderByKey();
+    photoDataRef.on('child_added', snapshot => {
+      /* Update React state when photodata is added at Firebase Database */
+      let photodata = { value: snapshot.val(), id: snapshot.key };
+      this.setState({ photoData: [photodata].concat(this.state.photoData) });
     })
   }
   addMessage(e){
     e.preventDefault(); // <- prevent from reloading the page
-    /* Send the message to Firebase */
-    firebase.database().ref('messages').push( this.state.avatarURL );
+    /* Send the photodata to Firebase */
+    firebase.database().ref('photo-url').push({text: this.state.avatarURL, hashtag: this.inputHashtag.value});
+    this.inputHashtag.value = ''; // <- clear the input
   }
 
   render() {
     var styleGalery = {
-      padding: "20px",
-      width:"30%",
+      padding: "1%",
+      width: "30%",
     };
+
+    var styleDiv = {
+      // display: "inline",
+    }
 
     return (
       <div>
         <h1>Home</h1>
-
         {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
         <FileUploader
           accept="image/*"
@@ -69,25 +73,37 @@ class Home extends Component {
           onProgress={this.handleProgress}
           multiple="false"
         />
-
-        <br /> <br />
-
+        <br />
+        <br />
+        {this.state.avatarURL &&
+          <img src={this.state.avatarURL} alt="avatar" style={styleGalery} />
+        }
+        <br />
         <form onSubmit={this.addMessage.bind(this)}>
           <input
+            type="text"
+            placeholder="Hashtags hinzufügen..."
+            ref={ el => this.inputHashtag = el }
+          />
+          <input
             type="submit"
-            value="Jetzt hinzufügen"
+            value="Veröffentlichen"
           />
         </form>
-
         <br />
-
-        {this.state.avatarURL && <img src={this.state.avatarURL} alt="avatar" style={styleGalery} />}
-
-        <br />
-
         <div>
           { /* Render all images */
-            this.state.messages.map( message => <img key={message.id} src={message.text} alt={message.id} style={styleGalery} /> )
+            this.state.photoData.map( photodata =>
+              <p style={styleDiv} key={photodata.id}>
+                <img
+                  src={photodata.value.text}
+                  alt={photodata.value.hashtag}
+                  style={styleGalery}
+                />
+                <br />
+                {photodata.value.hashtag}
+              </p>
+            )
           }
         </div>
       </div>
