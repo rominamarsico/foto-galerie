@@ -53,41 +53,52 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <h1>Home</h1>
-        {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
-        <FileUploader
-          accept="image/*"
-          name="avatar"
-          storageRef={firebase.storage().ref("images")}
-          onUploadStart={this.handleUploadStart}
-          onUploadError={this.handleUploadError}
-          onUploadSuccess={this.handleUploadSuccess}
-          onProgress={this.handleProgress}
-          multiple="false"
-        />
+        <header>
+          <h1>Foto Galerie</h1>
+        </header>
+        <br />
+        <br />
+        {this.state.isUploading && <p>Bild laden: {this.state.progress}%</p>}
+        <br />
+        <label className="button">Foto hinzufügen
+          <FileUploader
+            hidden
+            accept="image/*"
+            name="avatar"
+            storageRef={firebase.storage().ref("images")}
+            onUploadStart={this.handleUploadStart}
+            onUploadError={this.handleUploadError}
+            onUploadSuccess={this.handleUploadSuccess}
+            onProgress={this.handleProgress}
+          />
+        </label>
         <br />
         <br />
         {this.state.avatarURL &&
-          <img className="polaroidImg" src={this.state.avatarURL} alt="avatar" />
+          <form className="polaroids" onSubmit={this.addMessage.bind(this)}>
+            <div className="imgCrop">
+              <img className="polaroidImg" src={this.state.avatarURL} alt="avatar" />
+            </div>
+            <br />
+            <input
+              className="input"
+              type="text"
+              placeholder="Bildunterschrift..."
+              ref={ el => this.inputHashtag = el }
+            />
+            <input
+              className="button"
+              type="submit"
+              value="Veröffentlichen"
+            />
+          </form>
         }
-        <br />
-        <form onSubmit={this.addMessage.bind(this)}>
-          <input
-            type="text"
-            placeholder="Hashtags hinzufügen..."
-            ref={ el => this.inputHashtag = el }
-          />
-          <input
-            type="submit"
-            value="Veröffentlichen"
-          />
-        </form>
         <br />
         <div>
           { /* Render all images */
             this.state.photoData.map( photodata =>
               <p className="polaroids" key={photodata.id}>
-                <div className="container">
+                <div className="imgCrop">
                   <img className="polaroidImg"
                     src={photodata.value.text}
                     alt={photodata.value.hashtag}

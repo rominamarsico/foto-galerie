@@ -4,13 +4,18 @@
 
 .polaroidImg {
   width: 130%;
-  margin: -10% -90%;
+  margin: 0% -90%;
+}
+
+.imgCrop {
+  height: 270px;
+  overflow: hidden;
 }
 
 .polaroids {
   display: inline-block;
-  padding: 1%;
   width: 25%;
+  padding: 1%;
   padding-bottom: 30px;
   margin: 2%;
   font-family: "Bradley Hand";
@@ -18,12 +23,32 @@
   border: 2px solid lightgrey;
 }
 
-.container {
-  overflow: hidden;
+.input {
+  padding: 10px 20px;
 }
 
-@media (max-width: 600px) {
+.button {
+  padding: 10px;
+  border: 2px solid grey;
+  cursor: pointer;
+}
+
+@media (max-width: 850px) {
+  .polaroids {
+    width: 40%;
+  }
+
+  .imgCrop {
+    height: 230px;
+  }
+}
+
+@media (max-width: 400px) {
   .polaroids {
     width: 70%;
+  }
+
+  .imgCrop {
+    height: 250px;
   }
 }

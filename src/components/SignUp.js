@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import * as routes from '../constants/routes';
 import { auth } from '../firebase';
+import './SignIn.css';
 
 const SignUpPage = () =>
   <div>
@@ -63,31 +64,35 @@ class SignUpForm extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <input
+        <input className="input"
           value={username}
           onChange={event => this.setState(byPropKey('username', event.target.value))}
           type="text"
           placeholder="Full Name"
         />
-        <input
+        <br />
+        <input className="input"
           value={email}
           onChange={event => this.setState(byPropKey('email', event.target.value))}
           type="text"
           placeholder="Email Address"
         />
-        <input
+        <br />
+        <input className="input"
           value={passwordOne}
           onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
           type="password"
           placeholder="Password"
         />
-        <input
+        <br />
+        <input className="input"
           value={passwordTwo}
           onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
           type="password"
           placeholder="Confirm Password"
         />
-        <button disabled={isInvalid} type="submit">
+        <br />
+        <button className="button" disabled={isInvalid} type="submit">
           Sign Up
         </button>
 
@@ -99,9 +104,9 @@ class SignUpForm extends Component {
 
 const SignUpLink = () =>
   <p>
-    Don't have an account?
+    Noch keinen Account erstellt?
     {' '}
-    <Link to={routes.SIGN_UP}>Sign Up</Link>
+    <Link to={routes.SIGN_UP}>Jetzt anmelden!</Link>
   </p>
 
 export default SignUpPage;
