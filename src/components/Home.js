@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import firebase from "firebase";
 import FileUploader from "react-firebase-file-uploader";
+import './Home.css';
 
 class Home extends Component {
   // ---- storage ----
@@ -50,15 +51,6 @@ class Home extends Component {
   }
 
   render() {
-    var styleGalery = {
-      padding: "1%",
-      width: "30%",
-    };
-
-    var styleDiv = {
-      // display: "inline",
-    }
-
     return (
       <div>
         <h1>Home</h1>
@@ -76,7 +68,7 @@ class Home extends Component {
         <br />
         <br />
         {this.state.avatarURL &&
-          <img src={this.state.avatarURL} alt="avatar" style={styleGalery} />
+          <img className="polaroidImg" src={this.state.avatarURL} alt="avatar" />
         }
         <br />
         <form onSubmit={this.addMessage.bind(this)}>
@@ -94,13 +86,14 @@ class Home extends Component {
         <div>
           { /* Render all images */
             this.state.photoData.map( photodata =>
-              <p style={styleDiv} key={photodata.id}>
-                <img
-                  src={photodata.value.text}
-                  alt={photodata.value.hashtag}
-                  style={styleGalery}
-                />
-                <br />
+              <p className="polaroids" key={photodata.id}>
+                <div className="container">
+                  <img className="polaroidImg"
+                    src={photodata.value.text}
+                    alt={photodata.value.hashtag}
+                  />
+                </div>
+              <br />
                 {photodata.value.hashtag}
               </p>
             )

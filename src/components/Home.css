@@ -1,0 +1,29 @@
+/* * {
+  border: 1px solid red;
+} */
+
+.polaroidImg {
+  width: 130%;
+  margin: -10% -90%;
+}
+
+.polaroids {
+  display: inline-block;
+  padding: 1%;
+  width: 25%;
+  padding-bottom: 30px;
+  margin: 2%;
+  font-family: "Bradley Hand";
+  font-size: 130%;
+  border: 2px solid lightgrey;
+}
+
+.container {
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .polaroids {
+    width: 70%;
+  }
+}
