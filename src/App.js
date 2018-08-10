@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route, } from 'react-router-dom';
 
-import Navigation from './components/Navigation';
 import LandingPage from './components/Landing';
 import SignUpPage from './components/SignUp';
 import SignInPage from './components/SignIn';
@@ -13,24 +11,16 @@ import AccountPage from './components/Account';
 
 import * as routes from './constants/routes';
 import withAuthentication from './components/withAuthentication';
+import Title from './components/Title.js';
 
 class App extends Component {
 
   render() {
     return (
       <div className="App">
-
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-
         <Router>
           <div>
-            <Navigation />
-
-            <hr/>
-
+            <Title/>
             <Route exact path={routes.LANDING} component={() => <LandingPage />} />
             <Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
             <Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
@@ -39,7 +29,6 @@ class App extends Component {
             <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
           </div>
         </Router>
-
       </div>
     );
   }

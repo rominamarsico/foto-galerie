@@ -1,0 +1,22 @@
+.menuBar {
+  text-decoration: none;
+  list-style-type: none;
+  color: #ffffff;
+  display: inline;
+}
+
+.linkItem:link {
+  text-decoration: none;
+}
+
+.linkItem:visited {
+  color: #ffffff;
+}
+
+.linkItem:hover {
+  text-decoration: underline;
+}
+
+.listItem {
+  padding-bottom: 20px;
+}

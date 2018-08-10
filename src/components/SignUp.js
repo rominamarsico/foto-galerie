@@ -7,7 +7,6 @@ import './SignIn.css';
 
 const SignUpPage = () =>
   <div>
-    <h1>SignUp</h1>
     <SignUpForm />
   </div>
 
@@ -106,7 +105,7 @@ const SignUpLink = () =>
   <p>
     Noch keinen Account erstellt?
     {' '}
-    <Link to={routes.SIGN_UP}>Jetzt anmelden!</Link>
+    <Link className="link" to={routes.SIGN_UP}>Jetzt anmelden!</Link>
   </p>
 
 export default SignUpPage;

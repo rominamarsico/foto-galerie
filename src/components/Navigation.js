@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import AuthUserContext from './AuthUserContext';
 import SignOutButton from './SignOut';
 import * as routes from '../constants/routes';
+import './Navigation.css';
 
 const Navigation = () =>
   <AuthUserContext.Consumer>
@@ -14,17 +15,17 @@ const Navigation = () =>
   </AuthUserContext.Consumer>
 
 const NavigationAuth = () =>
-  <ul>
-    <li><Link to={routes.LANDING}>Landing</Link></li>
-    <li><Link to={routes.HOME}>Home</Link></li>
+  <ul className="menuBar">
+    <li><Link to={routes.LANDING}>Startseite</Link></li>
+    <li><Link to={routes.HOME}>Galerie</Link></li>
     <li><Link to={routes.ACCOUNT}>Account</Link></li>
     <li><SignOutButton /></li>
   </ul>
 
 const NavigationNonAuth = () =>
-  <ul>
-    <li><Link to={routes.LANDING}>Landing</Link></li>
-    <li><Link to={routes.SIGN_IN}>Sign In</Link></li>
+  <ul className="menuBar">
+    <li className="listItem"><Link className="linkItem" to={routes.LANDING}>Startseite</Link></li>
+    <li className="listItem"><Link className="linkItem" to={routes.SIGN_IN}>Einloggen</Link></li>
   </ul>
 
 export default Navigation;

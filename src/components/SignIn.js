@@ -8,7 +8,6 @@ import './SignIn.css';
 
 const SignInPage = ({ history }) =>
   <div>
-    <h1>Sign In</h1>
     <SignInForm history={history} />
     <SignUpLink />
   </div>

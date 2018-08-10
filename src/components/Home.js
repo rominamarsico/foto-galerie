@@ -53,9 +53,6 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <header>
-          <h1>Foto Galerie</h1>
-        </header>
         <br />
         <br />
         {this.state.isUploading && <p>Bild laden: {this.state.progress}%</p>}
